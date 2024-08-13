@@ -20,6 +20,8 @@ export default function Home() {
   const [filterValue, setFilterValue] = useState('');
   const [showInvites, setShowInvites] = useState(false); // State for modal visibility
   const [invites, setInvites] = useState([]); // Ensure invites is an array
+  const [acceptedInvites, setAcceptedInvites] = useState(new Set());
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -83,15 +85,19 @@ export default function Home() {
 
   const fetchInvites = async () => {
     try {
-      const response = await axios.get('/api/invites'); // Adjust the API endpoint as needed
-      console.log(response.data); // Log the response to check its structure
-      setInvites(Array.isArray(response.data) ? response.data : []); // Ensure invites is always an array
+      const token = localStorage.getItem('token'); 
+      const response = await axios.get('http://localhost:5000/api/v1/auth/invites', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data); 
+      setInvites(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching invites:', error.message);
-      setInvites([]); // Set invites to an empty array on error
+      setInvites([]);
     }
   };
-  
   const handleShowInvites = async () => {
     await fetchInvites();
     setShowInvites(true);
@@ -101,23 +107,12 @@ export default function Home() {
     setShowInvites(false);
   };
 
-  const handleAcceptInvite = async (inviteId) => {
-    try {
-      await axios.post(`/api/invites/${inviteId}/accept`);
-      setInvites(invites.filter(invite => invite.id !== inviteId));
-    } catch (error) {
-      console.error('Error accepting invite:', error.message);
-    }
+  const handleAcceptInvite = (groupName) => {
+    // Update the state to mark this group as accepted
+    setAcceptedInvites(prevAccepted => new Set(prevAccepted).add(groupName));
   };
 
-  const handleRejectInvite = async (inviteId) => {
-    try {
-      await axios.post(`/api/invites/${inviteId}/reject`);
-      setInvites(invites.filter(invite => invite.id !== inviteId));
-    } catch (error) {
-      console.error('Error rejecting invite:', error.message);
-    }
-  };
+
 
   const filter = filterType ? { [filterType]: filterValue } : {};
   
@@ -240,12 +235,12 @@ export default function Home() {
                         />
                       </div>
                     )}
-                    <button
+                    {/* <button
                       onClick={applyFilters}
                       className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-4 py-2"
                     >
                       Apply Filters
-                    </button>
+                    </button> */}
                   </div>
 
                   <div className="flex items-center space-x-4">
@@ -286,46 +281,41 @@ export default function Home() {
       <Footer/>
 
       {/* Modal for showing invites */}
+    
       {showInvites && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg w-11/12 max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Group Join Invites</h2>
-            {invites.length > 0 ? (
-              <ul>
-                {invites.map((invite) => (
-                  <li key={invite.id} className="border-b py-2">
-                    <p><strong>Group:</strong> {invite.groupName}</p>
-                    <p><strong>From:</strong> {invite.fromUser}</p>
-                    <p><strong>Message:</strong> {invite.message}</p>
-                    <div className="flex space-x-4 mt-2">
-                      <button
-                        onClick={() => handleAcceptInvite(invite.id)}
-                        className="bg-green-500 hover:bg-green-700 text-white rounded-lg px-4 py-2"
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() => handleRejectInvite(invite.id)}
-                        className="bg-red-500 hover:bg-red-700 text-white rounded-lg px-4 py-2"
-                      >
-                        Reject
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No invites found.</p>
-            )}
-            <button
-              onClick={handleCloseModal}
-              className="mt-4 bg-red-500 hover:bg-red-700 text-white rounded-lg px-4 py-2"
-            >
-              Close
-            </button>
-          </div>
+      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+        <div className="bg-white p-8 rounded-lg w-11/12 max-w-lg">
+          <h2 className="text-2xl font-bold mb-4">Group Invites</h2>
+          {invites.length > 0 ? (
+            <ul>
+              {invites.map((groupName, index) => (
+                <li key={index} className="border-b py-2 flex justify-between items-center">
+                 
+                  <p><strong className='bg-red-500 rounded-full p-3'>Group</strong>  {groupName}</p>
+                
+                  <button
+                    onClick={() => handleAcceptInvite(groupName)}
+                    className={`ml-4 px-4 py-2 rounded-lg text-white ${acceptedInvites.has(groupName) ? 'bg-gray-500' : 'bg-green-500 hover:bg-green-700'}`}
+                    disabled={acceptedInvites.has(groupName)}
+                  >
+                    {acceptedInvites.has(groupName) ? 'Accepted' : 'Accept'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No invites found.</p>
+          )}
+          <button
+            onClick={handleCloseModal}
+            className="mt-4 bg-red-500 hover:bg-red-700 text-white rounded-lg px-4 py-2"
+          >
+            Close
+          </button>
         </div>
-      )}
+      </div>
+    )}
+
     </div>
   );
 }

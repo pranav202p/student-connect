@@ -189,5 +189,22 @@ router.post('/invite', authenticateToken, async (req, res) => {
   }
 });
 
+//check invites
+router.get('/invites',authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id; 
+
+    // Fetch all groups where the current user is a member
+    const groups = await Groups.find({ members: userId }).select('name');
+
+    // Send the list of group names as the response
+    res.status(200).json(groups.map(group => group.name));
+  } catch (error) {
+    console.error('Error fetching invites:', error);
+    res.status(500).json({ error: 'Error fetching invites' });
+  }
+});
+
+
 
 export default router;
