@@ -118,7 +118,9 @@ export default function Home() {
   };
 
 
-
+  if (loading) return <div>Loading...</div>;
+  
+  
   const filter = filterType ? { [filterType]: filterValue } : {};
   
   return (
@@ -156,15 +158,15 @@ export default function Home() {
                       </svg>
                     </div>
                   )}
-                  <input
+                  {/* <input
                     type="text"
                     value={location}
                     onChange={handleLocationChange}
                     className="border rounded-lg py-2 px-4 mr-4"
-                  />
+                  /> */}
                 </div>
               ) : (
-                <div className="absolute top-4 right-4 flex space-x-4">
+                <div className="absolute top-7 right-9 flex space-x-4">
                   <Link to='/signup'>
                     <button className="border hover:bg-slate-300 rounded-lg px-4 py-2">Log in</button>
                   </Link>
@@ -180,7 +182,7 @@ export default function Home() {
               )}
             </header>
             
-            <main className="flex items-center mt-24 mx-24">
+            <main className="flex items-center mt-24 mb-4 mx-24">
               <div className="w-full pr-8">
                 <h1 className="text-5xl font-bold mb-4">
                   The Student platform—Where interests become friendships
@@ -192,11 +194,13 @@ export default function Home() {
                   Discover, collaborate, and thrive with peers who share your passions and ambitions.
                 </p>
                 
-                <Link to='signup'>
-                  <button className="bg-teal-600 hover:bg-teal-800 text-white rounded-lg px-6 py-3 text-lg">
-                    Join Now
-                  </button>
-                </Link>
+                {!user &&(
+              <Link to='signup'>
+          <button className="bg-teal-600 hover:bg-teal-800 text-white rounded-lg px-6 py-3 text-lg">
+            Join Now
+          </button>
+        </Link>
+          )}
               </div>
               <div className="w-1/2 mx-auto">
                 <img src={logo2} alt="Meetup illustration" className="bg-cover w-3/4" />
@@ -208,15 +212,15 @@ export default function Home() {
                 <div className="flex justify-between items-center mb-20">
                   <div className="w-1/2">
                     <h2 className="text-2xl font-bold mb-4">Filter Users</h2>
-                    <div className="mb-4">
-                      <label className="block text-sm mb-3 font-medium text-gray-700" htmlFor="filterType">
+                    <div className="mb-4 ">
+                      {/* <label className="block text-sm mb-3 font-medium text-gray-700" htmlFor="filterType">
                         Filter by
-                      </label>
+                      </label> */}
                       <select
                         id="filterType"
                         value={filterType}
                         onChange={handleFilterTypeChange}
-                        className="border rounded-lg py-2 px-4 w-full"
+                        className="border-2 border-b-gray-950 rounded-lg py-2 px-4 w-1/2"
                       >
                         <option value="">Select filter</option>
                         <option value="Name">Name</option>
@@ -236,7 +240,7 @@ export default function Home() {
                           id="filterValue"
                           value={filterValue}
                           onChange={handleFilterValueChange}
-                          className="border rounded-lg py-2 px-4 w-full"
+                          className="border-2 border-gray-200 rounded-lg py-2 px-4 w-1/2"
                         />
                       </div>
                     )}

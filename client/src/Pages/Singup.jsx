@@ -19,14 +19,13 @@ export default function Signup() {
     email: '',
     password: '',
   });
-  const navigate = useNavigate(); // Import and use navigate here
+  const navigate = useNavigate(); 
 
   useEffect(() => {
-    // Check for token and update login status
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      navigate('/'); // Redirect to home if already logged in
+      navigate('/');
     } else {
       setIsLoggedIn(false);
     }
@@ -42,9 +41,9 @@ export default function Signup() {
       toast.success("Login successful!");
       const { token } = response.data;
       localStorage.setItem('token', token);
-      console.log(token);
       setIsLoggedIn(true);
       navigate('/');
+      window.location.reload();
     } catch (error) {
       toast.error("Login failed. Please check your credentials.");
       console.error(error);
@@ -68,7 +67,7 @@ export default function Signup() {
     try {
       const response = await axios.post('http://localhost:5000/api/v1/auth/add', user);
       toast.success("User registered successfully.");
-      navigate('/signup'); // Redirect to login page or similar
+      navigate('/signup');
     } catch (error) {
       toast.error("Registration failed. Please try again.");
       console.error(error);
@@ -103,7 +102,6 @@ export default function Signup() {
     navigate('/');
   };
 
-  // Generate an array of years for dropdown
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 20 }, (_, i) => currentYear - i);
 
@@ -231,16 +229,14 @@ export default function Signup() {
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700" htmlFor="yearOfjoining">Year of Joining</label>
                     <input
+                      type="number"
                       id="yearOfjoining"
                       name="yearOfjoining"
                       value={user.yearOfjoining}
                       onChange={handleChange}
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       required
-                    >
-                     
-                   
-                    </input>
+                    />
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700" htmlFor="interests">Interests</label>
@@ -291,7 +287,7 @@ export default function Signup() {
                     />
                   </div>
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700" htmlFor="email">email</label>
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="email">Email</label>
                     <input
                       type="email"
                       id="email"

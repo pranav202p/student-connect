@@ -85,7 +85,11 @@ function People({ filter }) {
     setShowGroupSelector(true);
     fetchGroups(); // Call fetchGroups here if you want to load groups when opening the modal
   };
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
+  
   const handleGroupSelect = async (groupId) => {
     setSelectedGroupId(groupId);
     if (selectedPerson) {
@@ -181,7 +185,7 @@ function People({ filter }) {
               </div>
               <div className="text-left p-4">
                 <h2 className="text-2xl font-bold text-center mb-4">{selectedPerson.Name}</h2>
-                <p className="text-gray-700 mt-2"><strong>DOB:</strong> {selectedPerson.dob}</p>
+                <p className="text-gray-700 mt-2"><strong>DOB:</strong> {formatDate(selectedPerson.dob)}</p>
                 <p className="text-gray-700 mt-2"><strong>Year of Joining:</strong> {selectedPerson.yearOfjoining}</p>
                 <p className="text-gray-700 mt-2"><strong>Interests:</strong> {selectedPerson.interests.join(', ')}</p>
                 <p className="text-gray-700 mt-2"><strong>Hobbies:</strong> {selectedPerson.hobbies.join(', ')}</p>
