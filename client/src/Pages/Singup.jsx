@@ -42,7 +42,7 @@ export default function Signup() {
       toast.success("Login successful!");
       const { token } = response.data;
       localStorage.setItem('token', token);
-      console.log(token)
+      console.log(token);
       setIsLoggedIn(true);
       navigate('/');
     } catch (error) {
@@ -53,10 +53,21 @@ export default function Signup() {
 
   const register = async (e) => {
     e.preventDefault();
+    const age = new Date().getFullYear() - new Date(user.dob).getFullYear();
+
+    if (age < 18) {
+      toast.error("You must be at least 18 years old to register.");
+      return;
+    }
+
+    if (user.password.length < 8) {
+      toast.error("Password must be at least 8 characters long.");
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:5000/api/v1/auth/add', user);
       toast.success("User registered successfully.");
-    
       navigate('/signup'); // Redirect to login page or similar
     } catch (error) {
       toast.error("Registration failed. Please try again.");
@@ -91,6 +102,10 @@ export default function Signup() {
     setIsLoggedIn(false);
     navigate('/');
   };
+
+  // Generate an array of years for dropdown
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 20 }, (_, i) => currentYear - i);
 
   return (
     <div className="min-h-screen flex items-center mt-3 justify-center bg-gray-100">
@@ -177,23 +192,116 @@ export default function Signup() {
               <>
                 <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
                 <form onSubmit={register}>
-                  {Object.entries(user).map(([key, value]) => (
-                    key !== 'password' ? (
-                      <div className="mb-4" key={key}>
-                        <label className="block text-sm font-medium text-gray-700" htmlFor={key}>
-                          {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
-                        </label>
-                        <input
-                          type={key === 'dob' ? 'date' : key === 'email' ? 'email' : 'text'}
-                          id={key}
-                          name={key}
-                          value={value}
-                          onChange={handleChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        />
-                      </div>
-                    ) : null
-                  ))}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="Name">Name</label>
+                    <input
+                      type="text"
+                      id="Name"
+                      name="Name"
+                      value={user.Name}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="dob">Date of Birth</label>
+                    <input
+                      type="date"
+                      id="dob"
+                      name="dob"
+                      value={user.dob}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="course">Course</label>
+                    <input
+                      type="text"
+                      id="course"
+                      name="course"
+                      value={user.course}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="yearOfjoining">Year of Joining</label>
+                    <input
+                      id="yearOfjoining"
+                      name="yearOfjoining"
+                      value={user.yearOfjoining}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    >
+                     
+                   
+                    </input>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="interests">Interests</label>
+                    <input
+                      type="text"
+                      id="interests"
+                      name="interests"
+                      value={user.interests}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="hobbies">Hobbies</label>
+                    <input
+                      type="text"
+                      id="hobbies"
+                      name="hobbies"
+                      value={user.hobbies}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="currentAddress">Current Address</label>
+                    <input
+                      type="text"
+                      id="currentAddress"
+                      name="currentAddress"
+                      value={user.currentAddress}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="PermanentAddress">Permanent Address</label>
+                    <input
+                      type="text"
+                      id="PermanentAddress"
+                      name="PermanentAddress"
+                      value={user.PermanentAddress}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="email">email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={user.email}
+                      onChange={handleChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      required
+                    />
+                  </div>
                   <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700" htmlFor="password">Password</label>
                     <input

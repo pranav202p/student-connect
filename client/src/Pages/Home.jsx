@@ -9,6 +9,7 @@ import { FcInvite } from "react-icons/fc";
 import People from './People.jsx';
 import { SiGooglemaps } from "react-icons/si";
 import axios from 'axios';
+import CreateGroup from '../components/CreateGroup.jsx';
 
 export default function Home() {
   const { user, loading, logout } = useContext(AuthContext);
@@ -21,6 +22,10 @@ export default function Home() {
   const [showInvites, setShowInvites] = useState(false); // State for modal visibility
   const [invites, setInvites] = useState([]); // Ensure invites is an array
   const [acceptedInvites, setAcceptedInvites] = useState(new Set());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
 
   useEffect(() => {
@@ -244,10 +249,10 @@ export default function Home() {
                   </div>
 
                   <div className="flex items-center space-x-4">
-                    <Link to="/create-group" className="flex items-center space-x-7 p-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-4 py-2">
+                   <button className="flex items-center space-x-7 p-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-4 py-2"  onClick={openModal}>
                       <FaUsers size={28} />
                       <span>Create Group</span>
-                    </Link>
+                    </button>
                     <button
                       onClick={handleShowInvites}
                       className="flex items-center space-x-7 p-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-4 py-2"
@@ -257,7 +262,7 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
-
+                <CreateGroup isOpen={isModalOpen} onClose={closeModal} />
                 <div className="flex items-center space-x-10 mb-5">
                   <h1 className="text-3xl font-bold">
                     𝘗𝘦𝘰𝘱𝘭𝘦 𝘕𝘦𝘢𝘳 𝘔𝘦
@@ -283,7 +288,7 @@ export default function Home() {
       {/* Modal for showing invites */}
     
       {showInvites && (
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
         <div className="bg-white p-8 rounded-lg w-11/12 max-w-lg">
           <h2 className="text-2xl font-bold mb-4">Group Invites</h2>
           {invites.length > 0 ? (
