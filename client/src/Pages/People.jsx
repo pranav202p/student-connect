@@ -14,6 +14,8 @@ function People({ filter }) {
   const [showGroupSelector, setShowGroupSelector] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState(null);
   const [UserId, setUserId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const [itemsPerPage] = useState(8); // Number of items per page
   const token = localStorage.getItem('token');
 
   const getUserIdFromToken = () => {
@@ -85,11 +87,12 @@ function People({ filter }) {
     setShowGroupSelector(true);
     fetchGroups(); // Call fetchGroups here if you want to load groups when opening the modal
   };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toISOString().split('T')[0];
   };
-  
+
   const handleGroupSelect = async (groupId) => {
     setSelectedGroupId(groupId);
     if (selectedPerson) {
@@ -110,7 +113,7 @@ function People({ filter }) {
       }
     }
   };
-  
+
   useEffect(() => {
     // Apply filter to peopleData
     const filtered = peopleData.filter(person => {
@@ -125,13 +128,22 @@ function People({ filter }) {
     setFilteredPeople(filtered);
   }, [filter, peopleData]);
 
+  // Pagination logic
+  const indexOfLastPerson = currentPage * itemsPerPage;
+  const indexOfFirstPerson = indexOfLastPerson - itemsPerPage;
+  const currentPeople = filteredPeople.slice(indexOfFirstPerson, indexOfLastPerson);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div>
       <div className="grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 py-10">
-        {filteredPeople.map(person => (
+        {currentPeople.map(person => (
           <div
             key={person._id}
             className="bg-white shadow-xl rounded-lg mt-11 text-gray-900 cursor-pointer hover:shadow-2xl transition-shadow duration-300 flex flex-col"
@@ -229,6 +241,25 @@ function People({ filter }) {
           </div>
         </div>
       )}
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-6">
+        <button 
+          className="px-4 py-2 bg-gray-800 text-white rounded-l-lg"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span className="px-4 py-2 bg-gray-200 text-gray-800">{currentPage}</span>
+        <button 
+          className="px-4 py-2 bg-gray-800 text-white rounded-r-lg"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={indexOfLastPerson >= filteredPeople.length}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

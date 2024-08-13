@@ -54,8 +54,8 @@ export default function Signup() {
     e.preventDefault();
     const age = new Date().getFullYear() - new Date(user.dob).getFullYear();
 
-    if (age < 18) {
-      toast.error("You must be at least 18 years old to register.");
+    if (age < 15) {
+      toast.error("You must be at least 15 years old to register.");
       return;
     }
 
@@ -108,7 +108,7 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex items-center mt-3 justify-center bg-gray-100">
       <ToastContainer />
-      <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-6">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
         {isLoggedIn ? (
           <div>
             <h2 className="text-2xl text-center font-bold mb-4">Welcome</h2>
