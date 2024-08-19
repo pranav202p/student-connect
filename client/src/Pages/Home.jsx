@@ -126,7 +126,7 @@ export default function Home() {
   return (
     <div>
       <div className="max-w-screen mx-auto px-24 py-8">
-        {loading && <div>Loading...</div>}
+        {loading && <div className='mx-auto mt-50'>Loading...</div>}
         {!loading && (
           <>
             <header className="flex items-center mb-8">
