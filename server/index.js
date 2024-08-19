@@ -12,10 +12,11 @@ app.use(express.json());
 
 // CORS Configuration
 const allowedOrigins = [
-    'https://unishare-q3pz.vercel.app'
-];
-
-const corsOptions = {
+    'https://student-connect-bx1y.onrender.com'
+    
+  ];
+  
+  app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps, curl requests)
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
