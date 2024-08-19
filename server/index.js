@@ -11,7 +11,10 @@ app.use(express.json());
 
 //cors 
 const allowedOrigins = [
-    'https://unishare-q3pz.vercel.app/'
+    origin: 'https://unishare-q3pz.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
     
   ];
   
