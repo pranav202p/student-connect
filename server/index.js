@@ -11,7 +11,7 @@ app.use(express.json());
 
 //cors 
 const allowedOrigins = [
-    'https://student-connect-bx1y.onrender.com'
+    'https://unishare-q3pz.vercel.app/'
     
   ];
   
