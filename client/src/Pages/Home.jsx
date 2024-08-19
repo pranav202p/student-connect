@@ -207,7 +207,7 @@ export default function Home() {
               </div>
             </main>
 
-            {user && (
+            {!user && (
               <div className='mt-24 mx-24'>
                 <div className="flex justify-between items-center mb-20">
                   <div className="w-1/2">
