@@ -126,7 +126,7 @@ export default function Home() {
   return (
     <div>
       <div className="max-w-screen mx-auto px-24 py-8">
-        {loading && <div className='mx-auto mt-50'>Loading...</div>}
+        {loading && <div className='mx-auto mt-5'>Loading...</div>}
         {!loading && (
           <>
             <header className="flex items-center mb-8">
@@ -207,7 +207,7 @@ export default function Home() {
               </div>
             </main>
 
-            {!user ||user && (
+            {user && (
               <div className='mt-24 mx-24'>
                 <div className="flex justify-between items-center mb-20">
                   <div className="w-1/2">
