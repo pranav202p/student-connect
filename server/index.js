@@ -12,11 +12,11 @@ app.use(express.json());
 
 // CORS Configuration
 const allowedOrigins = [
-    'https://student-connect-bx1y.onrender.com'
     
-  ];
-  
-  app.use(cors({
+    'https://unishare-q3pz.vercel.app', // Including the origin you want to allow
+];
+
+const corsOptions = {
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps, curl requests)
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
@@ -30,7 +30,7 @@ const allowedOrigins = [
     optionsSuccessStatus: 204 // To handle successful preflight requests
 };
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); // Use the defined corsOptions
 
 // Routes
 app.use('/api/v1/auth', user);
