@@ -11,7 +11,7 @@ app.use(express.json());
 
 //cors 
 const allowedOrigins = [
-    'http://localhost:5173'
+    'https://student-connect-bx1y.onrender.com'
     
   ];
   
