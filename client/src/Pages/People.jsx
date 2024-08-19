@@ -97,7 +97,7 @@ function People({ filter }) {
     setSelectedGroupId(groupId);
     if (selectedPerson) {
       try {
-        await axios.post('http://localhost:5000/api/v1/auth/invite', {
+        await axios.post('https://student-connect-bx1y.onrender.com/api/v1/auth/invite', {
           groupId,
           personId: selectedPerson._id
         }, {
