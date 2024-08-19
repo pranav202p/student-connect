@@ -28,7 +28,7 @@ export default function CreateGroup({ isOpen, onClose }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/v1/auth/groups', {
+      await axios.post('https://student-connect-bx1y.onrender.com/api/v1/auth/groups', {
         name: groupName,
         description,
         createdBy: userId 

@@ -36,7 +36,7 @@ function People({ filter }) {
   useEffect(() => {
     const fetchPeopleData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/v1/auth/people', {
+        const response = await axios.get('https://student-connect-bx1y.onrender.com/api/v1/auth/people', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -55,7 +55,7 @@ function People({ filter }) {
 
   const fetchGroups = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/v1/auth/group', {
+      const response = await axios.get('https://student-connect-bx1y.onrender.com/api/v1/auth/group', {
         headers: {
           'Authorization': `Bearer ${token}`
         },

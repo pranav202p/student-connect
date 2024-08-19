@@ -91,7 +91,7 @@ export default function Home() {
   const fetchInvites = async () => {
     try {
       const token = localStorage.getItem('token'); 
-      const response = await axios.get('http://localhost:5000/api/v1/auth/invites', {
+      const response = await axios.get('https://student-connect-bx1y.onrender.com/api/v1/auth/invites', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

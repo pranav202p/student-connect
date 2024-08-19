@@ -34,7 +34,7 @@ export default function Signup() {
   const signIn = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/v1/auth/login', {
+      const response = await axios.post('https://student-connect-bx1y.onrender.com/api/v1/auth/login', {
         email: user.email,
         password: user.password,
       });
@@ -65,7 +65,7 @@ export default function Signup() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/v1/auth/add', user);
+      const response = await axios.post('https://student-connect-bx1y.onrender.com/api/v1/auth/add', user);
       toast.success("User registered successfully.");
       navigate('/signup');
     } catch (error) {
