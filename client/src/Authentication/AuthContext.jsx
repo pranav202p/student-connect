@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         console.log('Token:', token); // Log token
         if (token) {
-          const response = await axios.get('http://localhost:5000/api/v1/auth/me', {
+          const response = await axios.get('https://student-connect-bx1y.onrender.comapi/v1/auth/me', {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log('Response:', response.data); // Log response data
